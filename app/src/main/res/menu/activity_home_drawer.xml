@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Anasayfa" />
+        <item
+            android:id="@+id/nav_network"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Referanslarim" />
+
+    </group>
+
+    <item android:title="Cuzdanlar">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="USD Cuzdani" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="BTC Cuzdani" />
+            <item
+                android:id="@+id/nav_send1"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Geri Donusum Cuzdani" />
+        </menu>
+    </item>
+
+    <item android:title="Gelirler">
+        <menu>
+            <item
+                android:id="@+id/nav_binary"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Binary Geliri" />
+            <item
+                android:id="@+id/nav_mining"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Mining Geliri" />
+            <item
+                android:id="@+id/nav_referance"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Referans Geliri" />
+        </menu>
+    </item>
+
+        <item
+            android:id="@+id/nav_paket"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Paketler" />
+        <item
+            android:id="@+id/nav_ticket"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Bildirim ve Istekler" />
+        <item
+            android:id="@+id/nav_kariyer"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Kariyer" />
+    <item
+        android:id="@+id/nav_kazanc"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Kazanc yontemi" />
+    <item
+        android:id="@+id/nav_kamera"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Kamera" />
+
+
+</menu>
