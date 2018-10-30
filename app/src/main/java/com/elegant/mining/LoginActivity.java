@@ -29,12 +29,16 @@ public class LoginActivity extends AppCompatActivity {
     private AppCompatButton _loginButton;
     private ApiService _apiService;
     private ProgressDialog _progressDialog;
+    private SessionManager _sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initialize();
+        // Session Manager
+        _sessionManager = new SessionManager(getApplicationContext());
         _apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
+
     }
 
     private void initialize() {
@@ -71,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         _progressDialog.setMessage("Authenticating...");
         _progressDialog.show();
 
-        String email = _emailText.getText().toString();
+        final String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         Authenticate authenticate = new Authenticate();
@@ -86,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     AuthenticateResponseResult resp = response.body();
                     assert resp != null;
                     Log.d(TAG,resp.getResult().getAccessToken()+"");
-                    onLoginSuccess();
+                    onLoginSuccess(email);
 
                 }else {
                     onLoginFailed();
@@ -103,12 +107,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-    public void onLoginSuccess() {
+    public void onLoginSuccess(String email) {
         _loginButton.setEnabled(true);
         _progressDialog.dismiss();
-
+        _sessionManager.createLoginSession(email,email);
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+        finish();
 
     }
 
