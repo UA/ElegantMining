@@ -3,6 +3,10 @@ package com.elegant.mining;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +17,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.elegant.mining.fragments.HomeFragment;
+import com.elegant.mining.fragments.PackageFragment;
+import com.elegant.mining.interfaces.ApiService;
+import com.elegant.mining.models.SessionResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = HomeActivity.class.getSimpleName();
     private SessionManager _sessionManger;
-
+    private ApiService _apiService;
 
 
     @Override
@@ -28,6 +42,12 @@ public class HomeActivity extends AppCompatActivity
 
         _sessionManger = new SessionManager(getApplicationContext());
         _sessionManger.checkLogin();
+        _apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
+
+
+        Fragment fragment = new HomeFragment();
+        displaySelectedFragment(fragment);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +66,35 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void getCurrentLoginInformations() {
+        Call<SessionResponse> call = _apiService.getCurrentLoginInformations();
+        call.enqueue(new Callback<SessionResponse>() {
+            @Override
+            public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
+                if (response.isSuccessful()){
+                    SessionResponse resp = response.body();
+                    assert resp != null;
+                    Log.d(TAG,resp.getUser().getEmailAddress()+"");
+
+
+                }else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SessionResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void displaySelectedFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -86,8 +135,12 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Fragment fragment = null;
+
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            fragment = new HomeFragment();
+            displaySelectedFragment(fragment);
+
         } else if (id == R.id.nav_binary) {
 
         } else if (id == R.id.nav_mining) {
@@ -98,7 +151,12 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        }else if (id == R.id.nav_package) {
+            fragment = new PackageFragment();
+            displaySelectedFragment(fragment);
         }
+
+        
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

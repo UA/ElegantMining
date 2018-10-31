@@ -50,7 +50,7 @@
     </item>
 
         <item
-            android:id="@+id/nav_paket"
+            android:id="@+id/nav_package"
             android:icon="@drawable/ic_menu_share"
             android:title="Paketler" />
         <item
